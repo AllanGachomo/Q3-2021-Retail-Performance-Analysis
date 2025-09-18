@@ -66,6 +66,6 @@ Key analyses executed via complex T-SQL queries as well as DAX:
 
 *Data Transformation & Analysis*: T-SQL & Power BI
 
-*Initial Structuring*: Microsoft Excel (VBA)
+*Initial Structuring*: Microsoft Excel
 
 *Visualization*: Power BI
