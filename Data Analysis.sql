@@ -58,9 +58,7 @@ FROM RankedSales
 WHERE rn <=5
 ORDER BY POS_Location, [Units Sold] DESC;
 
--- 4. Best-Selling Product Name by POS Location  **Add to the Deck interesting insight $$
---LOOK INTO WHY ZOYA HAS THE BEST SELLING PRODUCTS BUT VIVO LEADS IN BEST SELLING VENDOR
-
+-- 3. Best-Selling Product Name by POS Location
 WITH RankedSales AS (
 SELECT
 	POS_Location,
@@ -121,7 +119,7 @@ WHERE Sale_Type = 'order'
 GROUP BY POS_Location, Vendor
 ORDER BY POS_Location, [Quantity to Product Ratio] DESC
 
--- 5. Best-Selling Vendors by POS Location
+-- 4. Best-Selling Vendors by POS Location
 WITH RankedSales AS (
 SELECT
 	POS_Location,
@@ -155,9 +153,7 @@ WHERE Sale_Type = 'order'
 GROUP BY POS_Location,  DATENAME(MONTH,[Date]), MONTH([Date])
 ORDER BY POS_Location, MONTH([Date])
 
--- 2. Weekly Sales Trend  by POS Location **Delve into the first and last week of each pos location %%
---1ST AND LAST WEEK SOLD VERY LITTLE IN ALL THE SUBCATEGORIES AND I CAN'T CHECK ANYTHING ELSE USING THE INVENTORY. PROBABLY CHECK WHICH DAYS IN THOSE SPECIFIC WEEKS ARE THE LOWEST
-
+-- 2. Weekly Sales Trend  by POS Location
 SELECT
     POS_Location,
     DATENAME(WEEK,[Date]) AS 'Week',
@@ -168,9 +164,7 @@ WHERE Sale_Type = 'order'
 GROUP BY POS_Location, DATENAME(WEEK,[Date]), DATEPART(WEEK,[Date])
 ORDER BY POS_Location, DATEPART(WEEK,[Date])
 
--- 3. Day of Week Sales Trend by POS Location **Good insight to delve deep $$
---CHECK WHICH CATEGORY, SUBCATEGORY OR EVEN PRODUCT THAT SELLS THE MOST IN SPECIFIC DAYS OF THE WEEK
-
+-- 3. Day of Week Sales Trend by POS Location 
 SELECT
     POS_Location,
     DATENAME(WEEKDAY,[Date]) AS 'Day of the Week',
@@ -260,7 +254,7 @@ ORDER BY POS_Location, DATEPART(WEEKDAY,[Date]);
 	ORDER BY POS_Location, [Day Number], [Total Sales Revenue] DESC;
 
 
--- INVENTORY OPTIMIZATION **Category and Subcategory as well
+-- INVENTORY OPTIMIZATION 
 -- 1. Stock Level and Sale Rate Comparison by POS Location (by Quantity)
 	-- CTE: Aggregate total inventory per POS location
 	WITH TotalInventory AS (
@@ -290,8 +284,6 @@ ORDER BY POS_Location, DATEPART(WEEKDAY,[Date]);
 	ORDER BY [Stock to Sales Ratio (Units)] DESC;
 	
 -- 2. Stock Level and Sale Rate Comparison by POS Location (by Value) 
---COMPARE BOTH RATIOS (VALUES & VOLUME)
-
 -- Analyze stock-to-sales ratio by POS:
 	-- CTE: Aggregate total inventory value per POS location
 	WITH TotalInventory AS (
@@ -373,8 +365,7 @@ GROUP BY POS_Location, Vendor
 ORDER BY POS_Location, Revenue DESC;
 
 
-Specifcs -- 1. CHECK IF ONE PRODUCT IN ONE POS_LOCATION IS THE SAME PRICE IN ANOTHER POS_LOCATION. SAMPLE ABOUT 5 PRODUCTS (1 OR 2 PRODUCTS FROM EACH VENDOR)
---some of them have different prices but mainly in september.... so I am thinking that there were offers on selected items  ***Include in the deck
+Specifcs -- 1. CHECK IF ONE PRODUCT IN ONE POS_LOCATION IS THE SAME PRICE IN ANOTHER POS_LOCATION.
 	WITH OneInventoryRowPerProduct AS (
     SELECT 
         Product_Name,
@@ -402,3 +393,4 @@ ON s.Product_Name = i.Product_Name
 AND s.POS_Location = i.POS_Location
 WHERE s.Sale_Type = 'order'AND (s.Total_Sales/s.Net_Quantity) <> i.[Inventory Price]
 ORDER BY s.Product_Name
+
