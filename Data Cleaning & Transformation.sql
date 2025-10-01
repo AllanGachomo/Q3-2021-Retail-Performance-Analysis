@@ -110,16 +110,17 @@
 		FROM RawSales
 	)AS CleanedNames;
 
--- Found POS_Location in Sales and Inventory Table differ (Inventory Tbale had an underscore)
-	-- Fixed this and added a - for Vivo T-Mall
+-- Found POS_Location in Sales and Inventory Table differ (Inventory Table had an underscore)
+	-- Fixed this and added a - for T-Mall
 	UPDATE Inventory
 	SET POS_Location = 
 			CASE 
-				WHEN POS_Location = 'Vivo_T_Mall' THEN 'Vivo T-Mall'
+				WHEN POS_Location = 'T_Mall' THEN 'T-Mall'
 				ELSE REPLACE(POS_Location, '_', ' ')
 			END;
 			
-	-- Updated Sales table as well to make Vivo T- Mall into Vivo T-Mall
+	-- Updated Sales table as well to make T- Mall into T-Mall
 	UPDATE Sales
-	SET POS_Location = 'Vivo T-Mall'
-	WHERE POS_Location = 'Vivo T- Mall'
+	SET POS_Location = 'T-Mall'
+
+	WHERE POS_Location = 'T- Mall'
